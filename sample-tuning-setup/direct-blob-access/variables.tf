@@ -17,12 +17,12 @@ variable "resource_group_location" {
 variable "project_prefix" {
   description = "Prefix of the resource group name that's combined with a random ID so name is unique in your Azure subscription."
   type        = string
-  default     = "raydemo"
+  default     = "raydemo-dir-access"
 }
 
 variable "azure_kubernetes_version" {
   description = "Version of the azure kubernetes"
-  default = "1.32"
+  default     = "1.33.0"
   type        = string
 }
 
@@ -48,7 +48,7 @@ variable "ray_nodepool1_vm_size" {
 variable "ray_nodepool1_node_count" {
   type        = number
   description = "The initial quantity of node for the workload pools."
-  default     = 10
+  default     = 5
 }
 
 # It is recommended to configure second node pool only if required
@@ -88,7 +88,7 @@ variable "azure_storage_profile" {
   default                        = {
     enable_disk_csi_driver       = false
     enable_file_csi_driver       = false
-    enable_blob_csi_driver       = true
+    enable_blob_csi_driver       = false
     enable_snapshot_controller   = false
   }
 }
@@ -99,32 +99,14 @@ variable "kuberay_version" {
   default                        = "1.4.2"
 }
 
-variable "kuberay_persistent_volume_claim_name" {
-  description  = "Name of kubernetes PersistentVolume Claim to deploy rayjob"
-  type         = string
-  default      = "pvc-blob-results"
+variable "kuberay_scrape_config_path" {
+  description = "Scrapeconfig path to scrape kuberay metrics"
+  type        = string
+  default     = "../kuberay-scrapeconfig.yaml"
 }
 
 variable "kuberay_namespace" {
   description  = "Namespace of kubernetes PersistentVolume Claim"
   type         = string
   default      = "default"
-}
-
-variable "kuberayjob_storageclass_name" {
-  description  = "kubernetes StorageClass name for provisioning persistentvolumeclaims for rayjob"
-  type         = string
-  default      = "azureblob-fuse-premium"
-}
-
-variable "kuberayjob_manifest_path" {
-  description = "Kuberay job filepath"
-  type        = string
-  default     = "../rayjob.yaml"
-}
-
-variable "kuberay_scrape_config_path" {
-  description = "Scrapeconfig path to scrape kuberay metrics"
-  type        = string
-  default     = "../kuberay-scrapeconfig.yaml"
 }
